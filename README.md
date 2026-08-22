@@ -4,9 +4,10 @@ A real-time chat and user management application built with React, Express, Sock
 
 ## Overview
 
-- **Authentication & Roles**: User registration and login are fully handled via the client interface and backend API (`/api/auth/register` and `/api/auth/login`). All self-registered users are assigned the standard `user` role by default.
-- **Admin Access**: User roles (`admin` / `user`) are managed directly within MongoDB. There is no separate code or route for admin registration; administrators sign in through the standard login form. To elevate a user to admin status or seed an admin account, set the user's `role` field to `"admin"` directly in the database.
-- **Real-Time Chat**: Authenticated users connect via Socket.IO for real-time messaging, with full user management privileges available to admin users.
+- **Authentication & Roles**: User registration and login are handled via `/api/auth/register` and `/api/auth/login`. Self-registered users are assigned the standard `user` role by default.
+- **Admin Access**: User roles (`admin` / `user`) are stored in MongoDB. To elevate a user to admin status, set the user's `role` field to `"admin"` in MongoDB. Admin users can create, edit, and delete users.
+- **Tokens & Expiration**: JWT tokens (`token` and `refreshToken`) expire in **7 days**.
+- **Real-Time Chat**: Authenticated users connect via Socket.IO for live 2-way messaging with database persistence.
 
 ---
 
@@ -79,6 +80,27 @@ PalmTask/
 
 ---
 
+## API Summary
+
+### Public Routes
+- `POST /api/auth/register` — Register a new user
+- `POST /api/auth/login` — Login user or admin (returns 7-day token)
+
+### Protected User Routes (Requires `Authorization: Bearer <TOKEN>`)
+- `GET /api/users/profile` — Verify current user session
+- `GET /api/users` — Get all users list
+- `GET /api/users/count` — Get total user count
+- `GET /api/users/:id` — Get single user by ID
+- `GET /api/chat/count` — Get total message count
+- `GET /api/chat/history/:userId` — Get 2-way chat history with a specific user
+
+### Admin-Only Routes (Requires `Authorization: Bearer <ADMIN_TOKEN>`)
+- `POST /api/users` — Admin create user
+- `PUT /api/users/:id` — Admin update user
+- `DELETE /api/users/:id` — Admin delete user
+
+---
+
 ## Prerequisites
 
 - Node.js (v18+ recommended)
@@ -95,7 +117,7 @@ cd server
 npm install
 ```
 
-Create a `.env` file in the `server/` directory:
+Create `.env` file in `server/`:
 
 ```env
 PORT=5000
@@ -103,7 +125,7 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 ```
 
-Run dev server:
+Run server:
 
 ```bash
 npm run dev
@@ -118,14 +140,14 @@ cd Client
 npm install
 ```
 
-Create a `.env` file in the `Client/` directory:
+Create `.env` file in `Client/`:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 VITE_SOCKET_URL=http://localhost:5000
 ```
 
-Run dev app:
+Run client:
 
 ```bash
 npm run dev
