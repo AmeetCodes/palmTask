@@ -4,9 +4,9 @@ A real-time chat and user management application built with React, Express, Sock
 
 ## Overview
 
-- **Authentication & Roles**: Users can register and log in via the client interface. New users receive the standard `user` role by default.
-- **Admin Access**: Roles (`admin` / `user`) are stored directly in MongoDB. To grant admin access, update the user's `role` field to `"admin"` in the database.
-- **Real-Time Chat**: Authenticated users connect via Socket.IO for real-time messaging.
+- **Authentication & Roles**: User registration and login are fully handled via the client interface and backend API (`/api/auth/register` and `/api/auth/login`). All self-registered users are assigned the standard `user` role by default.
+- **Admin Access**: User roles (`admin` / `user`) are managed directly within MongoDB. There is no separate code or route for admin registration; administrators sign in through the standard login form. To elevate a user to admin status or seed an admin account, set the user's `role` field to `"admin"` directly in the database.
+- **Real-Time Chat**: Authenticated users connect via Socket.IO for real-time messaging, with full user management privileges available to admin users.
 
 ---
 
