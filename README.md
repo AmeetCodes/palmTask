@@ -2,6 +2,8 @@
 
 A real-time chat and user management application built with React, Express, Socket.IO, and MongoDB.
 
+🌐 **Deployed Application**: [https://chat.amitniraula.com.np/](https://chat.amitniraula.com.np/)
+
 ## Overview
 
 - **Authentication & Roles**: User registration and login are handled via `/api/auth/register` and `/api/auth/login`. Self-registered users are assigned the standard `user` role by default.
