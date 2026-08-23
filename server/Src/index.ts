@@ -22,6 +22,10 @@ app.get("/", (_req, res) => {
   res.json({ message: "PalmTask Server API is running smoothly" });
 });
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok", message: "Server is healthy" });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/chat", chatRouter);
